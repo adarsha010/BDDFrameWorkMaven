@@ -4,6 +4,10 @@
 /src/.DS_Store
 /src/main/.DS_Store
 /target/
+/resources/drivers/
 /test-output/
 .classpath
+.idea/
+BDDFramework.iml
+/build/
 *.log
