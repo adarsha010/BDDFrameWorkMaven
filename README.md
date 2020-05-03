@@ -15,11 +15,11 @@ user can create tags like smoke , sanity and regression based on his needs
 #Intellij Run Configs
 * Main class: cucumber.api.cli.Main
 
-* Glue: com.ticketmaster.qa.cucumber <Folder where step definations placed> 
+* Glue: www.com.stepdefinations <Folder where step definations placed> 
 
-* Expected Classpath of Module: checkout2-automation-tests <folderName>
+* Expected Classpath of Module: BDDFramework <folderName>
 
-* VM Options: Any Run time arguments that need to be passed
+* VM Options: All run timr variables needs to be configured.
 
 # Run Time Variables
 
