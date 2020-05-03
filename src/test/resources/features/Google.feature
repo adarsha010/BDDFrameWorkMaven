@@ -1,4 +1,4 @@
-@custom
+@google
 Feature: Google Test case
 
 Background:

@@ -43,14 +43,14 @@ public class FlightHomePage {
 	
 	public void goToFlightSections() {
 		WaitUtils.waitTillElementVisible(flightMenu);
-		SeleniumUtils.clickOnElemnet(flightMenu);
+		SeleniumUtils.clickOnElemnet(flightMenu,"flightMenu");
 		logger.info("Click On flightMenu");
 		
 	}
 	
 	public void choosegoToPlace() {
 		WaitUtils.waitTillElementClickable(toField);
-		SeleniumUtils.clickOnElemnet(toField);
+		SeleniumUtils.clickOnElemnet(toField,"toField");
 		WebElement elementName =null;
 		for(int j=0; j<5;j++)
 			try {

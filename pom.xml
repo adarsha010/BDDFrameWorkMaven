@@ -8,15 +8,32 @@
 	<name>BDDFramework</name>
 	<description>BDDFramework</description>
 
-	<dependencies>
+	<properties>
+		<!-- browser related test properties -->
 
+
+		<!-- Cucumber related properties-->
+		<cucumber.tags.toRun>@bba</cucumber.tags.toRun>
+		<cucumber.tags.toIgnore>~@placeholder</cucumber.tags.toIgnore>
+		<cucumber.output.dir>${project.build.directory}/generated-test-sources/cucumber</cucumber.output.dir>
+		<cucumber.report.dir>target/cucumber-parallel</cucumber.report.dir>
+		<cucumber.report.destination>${project.build.directory}/donut/cucumber-reports</cucumber.report.destination>
+		<cucumber.features.dir>src/test/resources/features</cucumber.features.dir>
+
+		<!-- cucumber parallelism -->
+		<browser.instances>1</browser.instances>
+		<parallel.scheme>SCENARIO</parallel.scheme>
+		<reuse.forks>false</reuse.forks>
+
+	</properties>
+
+	<dependencies>
 		<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-java -->
 		<dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-java</artifactId>
 			<version>1.2.5</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -32,20 +49,153 @@
 			<version>1.2.17</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.14.3</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/info.cukes/cucumber-testng -->
 		<dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-testng</artifactId>
 			<version>1.2.5</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.temyers/cucumber-jvm-parallel-plugin -->
+		<dependency>
+			<groupId>com.github.temyers</groupId>
+			<artifactId>cucumber-jvm-parallel-plugin</artifactId>
+			<version>5.0.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sitture</groupId>
 			<artifactId>cucumber-jvm-extentreport</artifactId>
 			<version>3.1.0</version>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<version>3.0.0-M4</version>
+			<type>maven-plugin</type>
 
+		</dependency>
 	</dependencies>
+	<!-- Cucumber Parallel Plugin -->
+		<build>
+            <plugins>
 
+				<plugin>
+					<groupId>com.github.temyers</groupId>
+					<artifactId>cucumber-jvm-parallel-plugin</artifactId>
+					<version>4.2.0</version>
+					<executions>
+						<execution>
+							<id>generateRunners</id>
+							<phase>generate-test-sources</phase>
+							<goals>
+								<goal>generateRunners</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>target/runners</outputDirectory>
+								<glue>
+									<package>www.com.stepdefinations</package>
+								</glue>
+								<featuresDirectory>src/test/resources/features</featuresDirectory>
+								<cucumberOutputDir>target/cucumber-parallel</cucumberOutputDir>
+								<format>json</format>
+								<plugins>
+									<plugin>
+										<name>json</name>
+									</plugin>
+								</plugins>
+								<tags>
+									<tag>${cucumber.tags.toRun}</tag>
+									<tag>${cucumber.tags.toIgnore}</tag>
+									<tag>~@ignore</tag>
+								</tags>
+								<useTestNG>true</useTestNG>
+								<!-- <namingScheme>simple</namingScheme> <namingPattern>Parallel{c}TestRunner</namingPattern> -->
+								<parallelScheme>FEATURE</parallelScheme>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.22.1</version>
+					<executions>
+						<execution>
+							<id>acceptance-test</id>
+							<phase>integration-test</phase>
+							<goals>
+								<goal>integration-test</goal>
+							</goals>
+							<configuration>
+								<systemPropertyVariables>
+									<environment>$env.browser</environment>
+									<environment>$env.platformName</environment>
+									<environment>$env.env</environment>
+									<environment>$env.appURL</environment>
+									<environment>${env.USER}</environment>
+								</systemPropertyVariables>
+								<forkCount>${browser.instances}</forkCount>
+								<reuseForks>false</reuseForks>
+								<includes>
+									<include>**/*IT.class</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M4</version>
+                <!-- <configuration>
+                        <testSourceDirectory>BDDFramework/src/main/java</testSourceDirectory>
+                        <includes>
+                            <include>**/*Runner.java</include>
+                        </includes>
+                    </configuration> -->
+                </plugin>
+				<plugin>
+					<groupId>io.magentys</groupId>
+					<artifactId>donut-maven-plugin</artifactId>
+					<version>0.0.5</version>
+					<executions>
+						<execution>
+							<id>acceptance-test</id>
+							<phase>post-integration-test</phase>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+							<configuration>
+								<sourceDirectory>${cucumber.report.dir}</sourceDirectory>
+								<outputDirectory>${cucumber.report.destination}</outputDirectory>
+								<timestamp>${maven.build.timestamp}</timestamp>
+								<template>default</template>
+								<projectName>Selenium Automation Tests</projectName>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+            </plugins>
+        </build>
 </project>

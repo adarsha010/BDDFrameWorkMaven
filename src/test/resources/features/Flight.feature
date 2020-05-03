@@ -1,4 +1,4 @@
-@custom1
+@flight
 Feature: Flight Test case
 
 Background:
