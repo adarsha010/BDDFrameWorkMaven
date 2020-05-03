@@ -24,7 +24,13 @@ public class WaitUtils {
 		wait.until(ExpectedConditions.visibilityOf(ele));
 		logger.info("Element is now Visible ");
 	}
-	
+
+	public static void waitTillElementInvisibleVisible(WebElement ele) {
+
+		wait.until(ExpectedConditions.invisibilityOf(ele));
+		logger.info("Element is now Visible ");
+	}
+
 	public static void waitTillElementGetsInvisible(WebElement ele) {
 		
 		wait.until(ExpectedConditions.invisibilityOf(ele));

@@ -9,7 +9,7 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
 @CucumberOptions(features = { "src/test/resources" }, glue = { "classpath:www.com.stepdefinations" }, plugin = {
 			"pretty", "html:target/reports/cucumber",
 			"junit:build/reports/junit.xml",
-			"json:build/reports/cucumber.json" }, tags = { "@custom1" })
+			"json:build/reports/cucumber.json" }, tags = { "@google" })
 	public class MyTestNGCukesRunner extends AbstractTestNGCucumberTests {
 
 	final static Logger logger = Logger.getLogger(MyTestNGCukesRunner.class);
