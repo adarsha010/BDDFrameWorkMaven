@@ -1,12 +1,12 @@
-package com.www.utilities;
+package utilities;
+
+import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
-public class PropertyUtil {
+public class PropertyUtil extends BaseTest {
 	
 	final static Logger logger = Logger.getLogger(PropertyUtil.class);
 

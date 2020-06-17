@@ -1,11 +1,10 @@
 @google
 Feature: Google Test case
 
-Background:
-When i launch the Google Application
+  Background:
+    #When i launch the Google Application Application
 
-Scenario: Search scenario of the google
-When user enters the random value in Google search Bar
-And click on the search Button 
-Then Results page should be rendered
-
+  Scenario: Search scenario of the google
+    When user enters the random value in Google search Bar
+    And click on the search Button
+    Then Results page should be rendered
